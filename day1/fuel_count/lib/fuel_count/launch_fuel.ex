@@ -13,5 +13,6 @@ defmodule FuelCount.LaunchFuel do
 
   """
   def fuel_for_mass(mass) do
+    floor(mass / 3) - 2
   end
 end
