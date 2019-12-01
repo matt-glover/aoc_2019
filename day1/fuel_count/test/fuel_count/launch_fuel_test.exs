@@ -10,11 +10,19 @@ defmodule FuelCount.LaunchFuelTest do
     assert(FuelCount.LaunchFuel.fuel_for_mass(14) == 2)
   end
 
-  test "For a mass of 1969, the fuel required is 654" do
-    assert(FuelCount.LaunchFuel.fuel_for_mass(1969) == 654)
+  test "For a mass of 1969, the fuel required is 966" do
+    assert(FuelCount.LaunchFuel.fuel_for_mass(1969) == 966)
   end
 
-  test "For a mass of 100756, the fuel required is 33583" do
-    assert(FuelCount.LaunchFuel.fuel_for_mass(100_756) == 33583)
+  test "For a mass of 100756, the fuel required is 50346" do
+    assert(FuelCount.LaunchFuel.fuel_for_mass(100_756) == 50346)
+  end
+
+  test "A mass that directly requires 0 fuel requires 0 total fuel" do
+    assert(FuelCount.LaunchFuel.fuel_for_mass(6) == 0)
+  end
+
+  test "A mass that directly requires negative fuel requires 0 total fuel" do
+    assert(FuelCount.LaunchFuel.fuel_for_mass(3) == 0)
   end
 end
