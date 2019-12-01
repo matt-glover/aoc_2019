@@ -4,6 +4,8 @@ defmodule FuelCount.CLI do
   """
 
   def main(_args \\ []) do
-    # Do stuff
+    IO.puts("Starting")
+    result = FuelCount.Requirement.aggregate("./input")
+    IO.puts("Result: #{result}")
   end
 end
