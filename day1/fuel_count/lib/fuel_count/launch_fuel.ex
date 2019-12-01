@@ -5,6 +5,12 @@ defmodule FuelCount.LaunchFuel do
 
   @doc """
   Convert a mass measure to a required fuel measurement to launch that mass
+
+  ## Examples
+
+    iex> FuelCount.LaunchFuel.fuel_for_mass(9)
+    1
+
   """
   def fuel_for_mass(mass) do
   end
