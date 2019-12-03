@@ -4,6 +4,13 @@ defmodule Wire.CLI do
   """
 
   def main(_args \\ []) do
-    # Do stuff
+    IO.puts("Starting wire analysis")
+
+    [wire_1 | [wire_2 | []]] =
+      File.read!("./input")
+      |> String.split()
+
+    distance = Wire.Intersection.minimum_distance(wire_1, wire_2)
+    IO.puts("Result: #{distance}")
   end
 end
