@@ -4,6 +4,8 @@ defmodule IntCode.CLI do
   """
 
   def main(_args \\ []) do
-    # Do stuff
+    IO.puts("Starting")
+    result = IntCode.Compiler.run_program(File.read!("./input"))
+    IO.puts("Result: #{result}")
   end
 end
