@@ -3,11 +3,16 @@ defmodule IntCode.CLI do
   CLI interface to the IntCode computer
   """
 
-  def main(_args \\ []) do
-    IO.puts("Starting")
+  def main([]) do
+    main(["./input"])
+  end
+
+  def main(args) do
+    file_path = hd(args)
+    IO.puts("Starting with #{file_path}")
 
     result =
-      File.read!("./input")
+      File.read!(file_path)
       |> String.trim()
       |> IntCode.Compiler.run_program()
 
