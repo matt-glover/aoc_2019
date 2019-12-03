@@ -8,8 +8,8 @@ defmodule Wire.Intersection do
 
   ## Example
 
-    iex> Wire.Intersection("U2,R2", "R2,U2")
-    4
+    iex> Wire.Intersection.minimum_distance("R8,U5,L5,D3", "U7,R6,D4,L4")
+    6
 
   """
   def minimum_distance(wire_1, wire_2) do
