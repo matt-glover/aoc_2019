@@ -13,8 +13,6 @@ defmodule Wire.Intersection do
 
   """
   def minimum_distance(wire_1, wire_2) do
-    IO.puts("Wire 1: #{wire_1}\nWire 2: #{wire_2}")
-
     segments_1 =
       parse_wire(wire_1)
       |> generate_line_segments()
@@ -57,11 +55,29 @@ defmodule Wire.Intersection do
     process_segment(segments, remaining)
   end
 
-  defp step_to_point(step, starting_point) do
-    {1, 1}
+  defp step_to_point("R" <> step_distance, {start_x, start_y}) do
+    step_distance = String.to_integer(step_distance)
+    {start_x + step_distance, start_y}
+  end
+
+  defp step_to_point("L" <> step_distance, {start_x, start_y}) do
+    step_distance = String.to_integer(step_distance)
+    {start_x - step_distance, start_y}
+  end
+
+  defp step_to_point("U" <> step_distance, {start_x, start_y}) do
+    step_distance = String.to_integer(step_distance)
+    {start_x, start_y + step_distance}
+  end
+
+  defp step_to_point("D" <> step_distance, {start_x, start_y}) do
+    step_distance = String.to_integer(step_distance)
+    {start_x, start_y - step_distance}
   end
 
   defp find_intersections(segments_1, segments_2) do
+    IO.puts("Segments 1: #{inspect(segments_1)}")
+    IO.puts("Segments 2: #{inspect(segments_2)}")
     [{1, 2}, {3, 5}]
   end
 
