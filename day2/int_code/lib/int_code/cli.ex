@@ -5,7 +5,12 @@ defmodule IntCode.CLI do
 
   def main(_args \\ []) do
     IO.puts("Starting")
-    result = IntCode.Compiler.run_program(File.read!("./input"))
+
+    result =
+      File.read!("./input")
+      |> String.trim()
+      |> IntCode.Compiler.run_program()
+
     IO.puts("Result: #{result}")
   end
 end

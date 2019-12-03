@@ -13,6 +13,35 @@ defmodule IntCode.Compiler do
 
   """
   def run_program(source_code) do
-    # raw_source
+    parsed =
+      String.split(source_code, ",")
+      |> Enum.map(fn x -> String.to_integer(x) end)
+
+    result = execute_code(0, parsed)
+
+    Enum.join(result, ",")
+  end
+
+  defp execute_code(current_index, code) do
+    segment = List.to_tuple(Enum.slice(code, current_index, 4))
+
+    case process_segment(segment, code) do
+      :exit -> code
+      processed_code -> execute_code(current_index + 4, processed_code)
+    end
+  end
+
+  defp process_segment(segment, _source) when elem(segment, 0) == 99 do
+    :exit
+  end
+
+  defp process_segment({1, input_index_1, input_index_2, output_index}, full_source) do
+    value = Enum.at(full_source, input_index_1) + Enum.at(full_source, input_index_2)
+    List.replace_at(full_source, output_index, value)
+  end
+
+  defp process_segment({2, input_index_1, input_index_2, output_index}, full_source) do
+    value = Enum.at(full_source, input_index_1) * Enum.at(full_source, input_index_2)
+    List.replace_at(full_source, output_index, value)
   end
 end
