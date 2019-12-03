@@ -9,7 +9,7 @@ defmodule IntCode.Compiler do
   ## Examples
 
     iex> IntCode.Compiler.run_program("1,9,10,3,2,3,11,0,99,30,40,50")
-    "3500,9,10,70,2,3,11,0,99,30,40,50"
+    [3500,9,10,70,2,3,11,0,99,30,40,50]
 
   """
   def run_program(source_code) do
@@ -17,9 +17,7 @@ defmodule IntCode.Compiler do
       String.split(source_code, ",")
       |> Enum.map(fn x -> String.to_integer(x) end)
 
-    result = execute_code(0, parsed)
-
-    Enum.join(result, ",")
+    execute_code(0, parsed)
   end
 
   defp execute_code(current_index, code) do
