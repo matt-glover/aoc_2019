@@ -22,6 +22,8 @@ defmodule Wire.Intersection do
       |> generate_line_segments()
 
     find_intersections(segments_1, segments_2)
+    # Everything starts at 0,0 but that intersection is irrelevant
+    |> Enum.reject(fn {x, y} -> x == 0 && y == 0 end)
     |> calculate_distances()
     |> Enum.min()
   end
@@ -76,12 +78,46 @@ defmodule Wire.Intersection do
   end
 
   defp find_intersections(segments_1, segments_2) do
-    IO.puts("Segments 1: #{inspect(segments_1)}")
-    IO.puts("Segments 2: #{inspect(segments_2)}")
-    [{1, 2}, {3, 5}]
+    Enum.reduce(segments_1, [], fn line_segment, acc ->
+      matches =
+        Enum.reduce(segments_2, [], fn second_segment, second_acc ->
+          case intersection(line_segment, second_segment) do
+            :no_intersection ->
+              second_acc
+
+            intersection ->
+              [intersection | second_acc]
+          end
+        end)
+
+      matches ++ acc
+    end)
   end
 
   defp calculate_distances(intersections) do
-    Enum.map(intersections, fn x -> 1 end)
+    Enum.map(intersections, fn {x, y} -> abs(0 - x) + abs(0 - y) end)
+  end
+
+  defp intersection(
+         {{s1_a_x, s1_a_y}, {s1_b_x, s1_b_y}},
+         {{s2_a_x, s2_a_y}, {s2_b_x, s2_b_y}}
+       ) do
+    s1_horizontal = s1_a_y == s1_b_y
+    s2_horizontal = s2_a_y == s2_b_y
+
+    cond do
+      s1_horizontal && !s2_horizontal && Enum.member?(s2_a_y..s2_b_y, s1_a_y) &&
+          Enum.member?(s1_a_x..s1_b_x, s2_a_x) ->
+        {s2_a_x, s1_a_y}
+
+      !s1_horizontal && s2_horizontal && Enum.member?(s1_a_y..s1_b_y, s2_a_y) &&
+          Enum.member?(s2_a_x..s2_b_x, s1_a_x) ->
+        {s1_a_x, s2_a_y}
+
+      # Temporarily ignore cases where both are horizontal or vertical
+      # See if they're needed for the larger problem set
+      true ->
+        :no_intersection
+    end
   end
 end
