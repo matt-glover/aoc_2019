@@ -46,6 +46,17 @@ defmodule Wire.Intersection do
     |> Enum.reject(fn {x, y} -> x == 0 && y == 0 end)
   end
 
+  def point_on_segment({{seg_x_1, seg_y_1}, {seg_x_2, seg_y_2}}, {x, y}) do
+    horizontal_segment = seg_y_1 == seg_y_2
+    vertical_segment = !horizontal_segment
+
+    cond do
+      horizontal_segment && y == seg_y_1 && Enum.member?(seg_x_1..seg_x_2, x) -> true
+      vertical_segment && x == seg_x_1 && Enum.member?(seg_y_1..seg_y_2, y) -> true
+      true -> false
+    end
+  end
+
   defp parse_wire(raw_wire_path) do
     String.split(raw_wire_path, ",")
   end

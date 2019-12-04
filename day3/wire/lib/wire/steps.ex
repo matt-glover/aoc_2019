@@ -22,6 +22,29 @@ defmodule Wire.Steps do
   end
 
   defp count_steps(intersection, segments_1, segments_2) do
-    1
+    steps =
+      segments_1
+      |> Enum.reverse()
+      |> Enum.reduce_while(0, fn current_segment, acc ->
+        {term, steps} = calc_steps_and_halt(current_segment, intersection)
+        {term, acc + steps}
+      end)
+
+    segments_2
+    |> Enum.reverse()
+    |> Enum.reduce_while(steps, fn current_segment, acc ->
+      {term, steps} = calc_steps_and_halt(current_segment, intersection)
+      {term, acc + steps}
+    end)
+  end
+
+  defp calc_steps_and_halt({{x1, y1}, {x2, y2}} = segment, {t1, t2} = target) do
+    if Wire.Intersection.point_on_segment(segment, target) do
+      # Steps to the target
+      {:halt, abs(x1 - t1) + abs(y1 - t2)}
+    else
+      # Steps across the segment
+      {:cont, abs(x1 - x2) + abs(y1 - y2)}
+    end
   end
 end
