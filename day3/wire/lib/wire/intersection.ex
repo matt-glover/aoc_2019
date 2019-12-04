@@ -13,19 +13,37 @@ defmodule Wire.Intersection do
 
   """
   def minimum_distance(wire_1, wire_2) do
-    segments_1 =
-      parse_wire(wire_1)
-      |> generate_line_segments()
-
-    segments_2 =
-      parse_wire(wire_2)
-      |> generate_line_segments()
+    segments_1 = wire_to_segments(wire_1)
+    segments_2 = wire_to_segments(wire_2)
 
     find_intersections(segments_1, segments_2)
-    # Everything starts at 0,0 but that intersection is irrelevant
-    |> Enum.reject(fn {x, y} -> x == 0 && y == 0 end)
     |> calculate_distances()
     |> Enum.min()
+  end
+
+  def wire_to_segments(wire) do
+    wire
+    |> parse_wire()
+    |> generate_line_segments()
+  end
+
+  def find_intersections(segments_1, segments_2) do
+    Enum.reduce(segments_1, [], fn line_segment, acc ->
+      matches =
+        Enum.reduce(segments_2, [], fn second_segment, second_acc ->
+          case intersection(line_segment, second_segment) do
+            :no_intersection ->
+              second_acc
+
+            intersection ->
+              [intersection | second_acc]
+          end
+        end)
+
+      matches ++ acc
+    end)
+    # Everything starts at 0,0 but that intersection is irrelevant
+    |> Enum.reject(fn {x, y} -> x == 0 && y == 0 end)
   end
 
   defp parse_wire(raw_wire_path) do
@@ -75,23 +93,6 @@ defmodule Wire.Intersection do
   defp step_to_point("D" <> step_distance, {start_x, start_y}) do
     step_distance = String.to_integer(step_distance)
     {start_x, start_y - step_distance}
-  end
-
-  defp find_intersections(segments_1, segments_2) do
-    Enum.reduce(segments_1, [], fn line_segment, acc ->
-      matches =
-        Enum.reduce(segments_2, [], fn second_segment, second_acc ->
-          case intersection(line_segment, second_segment) do
-            :no_intersection ->
-              second_acc
-
-            intersection ->
-              [intersection | second_acc]
-          end
-        end)
-
-      matches ++ acc
-    end)
   end
 
   defp calculate_distances(intersections) do
