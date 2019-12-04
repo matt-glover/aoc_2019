@@ -38,12 +38,14 @@ defmodule FindPassword.Matcher do
   end
 
   defp no_digit_pairs?(value) do
-    comparison =
+    duplicates =
       value
       |> Integer.digits()
-      |> Enum.dedup()
-      |> Integer.undigits()
+      |> Enum.reduce(%{}, fn digit, acc ->
+        current = Map.get(acc, digit, 0)
+        Map.put(acc, digit, current + 1)
+      end)
 
-    value == comparison
+    !Enum.any?(duplicates, fn {_key, value} -> value == 2 end)
   end
 end
