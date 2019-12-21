@@ -1,6 +1,6 @@
-defmodule IntCode.Compiler do
+defmodule IntCodePoc.Compiler do
   @moduledoc """
-  IntCode processor
+  IntCodePoc processor
   """
 
   @doc """
@@ -8,7 +8,7 @@ defmodule IntCode.Compiler do
 
   ## Examples
 
-    iex> IntCode.Compiler.run_program("1,9,10,3,2,3,11,0,99,30,40,50")
+    iex> IntCodePoc.Compiler.run_program("1,9,10,3,2,3,11,0,99,30,40,50")
     [3500,9,10,70,2,3,11,0,99,30,40,50]
 
   """

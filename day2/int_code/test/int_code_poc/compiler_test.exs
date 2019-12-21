@@ -1,7 +1,7 @@
-defmodule IntCode.CompilerTest do
+defmodule IntCodePoc.CompilerTest do
   use ExUnit.Case
-  alias IntCode.Compiler
-  doctest IntCode.Compiler
+  alias IntCodePoc.Compiler
+  doctest IntCodePoc.Compiler
 
   test "1 + 1 = 2" do
     assert Compiler.run_program("1,0,0,0,99") == [2, 0, 0, 0, 99]

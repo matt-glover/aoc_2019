@@ -1,6 +1,6 @@
-defmodule IntCode do
+defmodule IntCodePoc do
   @moduledoc """
-  Documentation for IntCode.
+  Documentation for IntCodePoc.
   """
 
   @doc """
@@ -8,7 +8,7 @@ defmodule IntCode do
 
   ## Examples
 
-      iex> IntCode.hello()
+      iex> IntCodePoc.hello()
       :world
 
   """

@@ -1,6 +1,6 @@
-defmodule IntCode.CLI do
+defmodule IntCodePoc.CLI do
   @moduledoc """
-  CLI interface to the IntCode computer
+  CLI interface to the IntCodePoc computer
   """
 
   def main([]) do
@@ -31,7 +31,7 @@ defmodule IntCode.CLI do
     result =
       File.read!(file_path)
       |> String.trim()
-      |> IntCode.Compiler.run_program()
+      |> IntCodePoc.Compiler.run_program()
       |> Enum.join(",")
 
     IO.puts("Result: #{result}")
@@ -44,7 +44,7 @@ defmodule IntCode.CLI do
       |> List.replace_at(1, input_1)
       |> List.replace_at(2, input_2)
       |> Enum.join(",")
-      |> IntCode.Compiler.run_program()
+      |> IntCodePoc.Compiler.run_program()
       |> hd()
 
     program_output == 19_690_720
