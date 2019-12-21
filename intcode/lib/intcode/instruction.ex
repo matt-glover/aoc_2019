@@ -14,7 +14,7 @@ defmodule Intcode.Instruction do
   end
 
   def new(99) do
-    %Instruction{op_code: :halt}
+    %Instruction{op_code: :halt, parameters: {}}
   end
 
   # TODO: Using this function, .new, Memory.read_instruction is a bit awkward. Consider refactoring.

@@ -20,4 +20,37 @@ defmodule Intcode do
   def load_program(source_code) do
     %Intcode.Program{memory: Intcode.Memory.new(source_code)}
   end
+
+  @doc """
+  Execute a loaded program until it halts
+  """
+  def run_program(
+        %Intcode.Program{memory: memory, instruction_pointer: pointer} = initialized_program
+      ) do
+    instruction = Intcode.Memory.read_instruction(memory, pointer)
+
+    case process_instruction(memory, instruction) do
+      {:halt, memory} ->
+        memory
+
+      {:continue, instruction_offset, updated_memory} ->
+        updated_program = %{
+          initialized_program
+          | memory: updated_memory,
+            instruction_pointer: pointer + instruction_offset
+        }
+
+        run_program(updated_program)
+    end
+  end
+
+  defp process_instruction(memory, %Intcode.Instruction{op_code: :halt}) do
+    {:halt, Intcode.Memory.read_memory(memory, 0)}
+  end
+
+  defp process_instruction(memory, instruction = %Intcode.Instruction{parameters: parameters}) do
+    updated_memory = Intcode.Memory.apply_instruction(memory, instruction)
+    # + 1 to account for the op_code itself
+    {:continue, tuple_size(parameters) + 1, updated_memory}
+  end
 end

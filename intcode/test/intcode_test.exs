@@ -13,5 +13,8 @@ defmodule IntcodeTest do
     assert pointer == 0
   end
 
-  test "run_program/0 executes the currently loaded program until it halts"
+  test "run_program/1 executes the loaded program until it halts" do
+    program = Intcode.load_program("1,2,4,0,99")
+    assert Intcode.run_program(program) == 103
+  end
 end

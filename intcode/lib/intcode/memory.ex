@@ -19,11 +19,32 @@ defmodule Intcode.Memory do
     memory.map[address]
   end
 
+  def write_memory(memory, address, value) do
+    updated = Map.put(memory.map, address, value)
+    %{memory | map: updated}
+  end
+
   def read_instruction(memory, address) do
     op_code = Intcode.Memory.read_memory(memory, address)
     param_count = Intcode.Instruction.params_for_code(op_code)
 
     build_instruction(memory, address, op_code, param_count)
+  end
+
+  def apply_instruction(memory, %Intcode.Instruction{
+        op_code: :add,
+        parameters: {value_1, value_2, destination}
+      }) do
+    result = value_1 + value_2
+    Intcode.Memory.write_memory(memory, destination, result)
+  end
+
+  def apply_instruction(memory, %Intcode.Instruction{
+        op_code: :multiply,
+        parameters: {value_1, value_2, destination}
+      }) do
+    result = value_1 * value_2
+    Intcode.Memory.write_memory(memory, destination, result)
   end
 
   defp build_instruction(_memory, _address, op_code, 0) do
