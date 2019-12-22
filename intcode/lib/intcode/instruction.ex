@@ -21,4 +21,23 @@ defmodule Intcode.Instruction do
   def params_for_code(1), do: 3
   def params_for_code(2), do: 3
   def params_for_code(99), do: 0
+
+  @doc """
+  Apply an instruction to memory
+  """
+  def apply_instruction(memory, %Intcode.Instruction{
+        op_code: :add,
+        parameters: {value_1, value_2, destination}
+      }) do
+    result = value_1 + value_2
+    Intcode.Memory.write_memory(memory, destination, result)
+  end
+
+  def apply_instruction(memory, %Intcode.Instruction{
+        op_code: :multiply,
+        parameters: {value_1, value_2, destination}
+      }) do
+    result = value_1 * value_2
+    Intcode.Memory.write_memory(memory, destination, result)
+  end
 end

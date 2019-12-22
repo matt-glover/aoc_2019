@@ -27,4 +27,18 @@ defmodule Intcode.InstructionTest do
   test "params_for_code/1 returns 0 parameters for halt instruction" do
     assert(0 == Instruction.params_for_code(99))
   end
+
+  test "apply_instruction/2 for :add adds two locations and updates the target" do
+    memory = Intcode.Memory.new("1,2,3,3,99")
+    instruction = %Instruction{op_code: :add, parameters: {2, 3, 3}}
+    updated_memory = Instruction.apply_instruction(memory, instruction)
+    assert("1,2,3,5,99" == Intcode.Memory.dump_memory(updated_memory))
+  end
+
+  test "apply_instruction/2 for :multiply multiplies two locations and updates the target" do
+    memory = Intcode.Memory.new("2,2,3,3,99")
+    instruction = %Instruction{op_code: :multiply, parameters: {2, 3, 3}}
+    updated_memory = Instruction.apply_instruction(memory, instruction)
+    assert("2,2,3,6,99" == Intcode.Memory.dump_memory(updated_memory))
+  end
 end

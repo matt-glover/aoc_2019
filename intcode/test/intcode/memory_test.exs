@@ -27,4 +27,12 @@ defmodule Intcode.MemoryTest do
 
     assert(%Intcode.Instruction{op_code: :halt} = Memory.read_instruction(memory, 4))
   end
+
+  test "dump_memory/1 dumps all memory as if it were source code used to initialize memory" do
+    memory = %Memory{
+      map: %{0 => 1, 1 => 3, 2 => 2, 3 => 1, 4 => 2, 5 => 0, 6 => 95, 7 => 3, 8 => 99}
+    }
+
+    assert "1,3,2,1,2,0,95,3,99" == Memory.dump_memory(memory)
+  end
 end

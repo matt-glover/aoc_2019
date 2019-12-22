@@ -31,20 +31,11 @@ defmodule Intcode.Memory do
     build_instruction(memory, address, op_code, param_count)
   end
 
-  def apply_instruction(memory, %Intcode.Instruction{
-        op_code: :add,
-        parameters: {value_1, value_2, destination}
-      }) do
-    result = value_1 + value_2
-    Intcode.Memory.write_memory(memory, destination, result)
-  end
-
-  def apply_instruction(memory, %Intcode.Instruction{
-        op_code: :multiply,
-        parameters: {value_1, value_2, destination}
-      }) do
-    result = value_1 * value_2
-    Intcode.Memory.write_memory(memory, destination, result)
+  @doc """
+  Dump out the underlying memory data in the supported source code import format
+  """
+  def dump_memory(memory) do
+    Enum.map_join(memory.map, ",", fn {_key, value} -> value end)
   end
 
   defp build_instruction(_memory, _address, op_code, 0) do

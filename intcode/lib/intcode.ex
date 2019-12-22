@@ -49,7 +49,7 @@ defmodule Intcode do
   end
 
   defp process_instruction(memory, instruction = %Intcode.Instruction{parameters: parameters}) do
-    updated_memory = Intcode.Memory.apply_instruction(memory, instruction)
+    updated_memory = Intcode.Instruction.apply_instruction(memory, instruction)
     # + 1 to account for the op_code itself
     {:continue, tuple_size(parameters) + 1, updated_memory}
   end
