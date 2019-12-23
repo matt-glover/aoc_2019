@@ -5,23 +5,23 @@ defmodule Intcode.Instruction do
 
   defstruct [:op_code, :parameters]
 
-  def new(1, parameters = {_input_1, _input_2, _output_location}) do
+  def new(:add, parameters = {_input_1, _input_2, _output_location}) do
     %Instruction{op_code: :add, parameters: parameters}
   end
 
-  def new(2, parameters = {_input_1, _input_2, _output_location}) do
+  def new(:multiply, parameters = {_input_1, _input_2, _output_location}) do
     %Instruction{op_code: :multiply, parameters: parameters}
   end
 
-  def new(3, parameters = {_input_destination}) do
+  def new(:input, parameters = {_input_destination}) do
     %Instruction{op_code: :input, parameters: parameters}
   end
 
-  def new(4, parameters = {_output_value}) do
+  def new(:output, parameters = {_output_value}) do
     %Instruction{op_code: :output, parameters: parameters}
   end
 
-  def new(99) do
+  def new(:halt, {}) do
     %Instruction{op_code: :halt, parameters: {}}
   end
 

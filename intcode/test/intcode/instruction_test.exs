@@ -3,28 +3,6 @@ defmodule Intcode.InstructionTest do
   import ExUnit.CaptureIO
   alias Intcode.Instruction
 
-  test "new/1 with an op_code of 99 creates a :halt instruction" do
-    assert(%Instruction{op_code: :halt} = Instruction.new(99))
-  end
-
-  test "new/2 with an op_code of 1 creates an :add instruction" do
-    assert(%Instruction{op_code: :add, parameters: {1, 2, 3}} = Instruction.new(1, {1, 2, 3}))
-  end
-
-  test "new/2 with an op_code of 2 creates an :multiply instruction" do
-    assert(
-      %Instruction{op_code: :multiply, parameters: {4, 5, 6}} = Instruction.new(2, {4, 5, 6})
-    )
-  end
-
-  test "new/2 with an op_code of 3 creates an :input instruction" do
-    assert(%Instruction{op_code: :input, parameters: {4}} = Instruction.new(3, {4}))
-  end
-
-  test "new/2 with an op_code of 4 creates an :output instruction" do
-    assert(%Instruction{op_code: :output, parameters: {6}} = Instruction.new(4, {6}))
-  end
-
   test "apply_instruction/2 for :add adds two locations and updates the target" do
     memory = Intcode.Memory.new("1,2,3,3,99")
     instruction = %Instruction{op_code: :add, parameters: {2, 3, 3}}
