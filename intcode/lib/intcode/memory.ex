@@ -34,7 +34,7 @@ defmodule Intcode.Memory do
   @doc """
   Dump out the underlying memory data in the supported source code import format
   """
-  def dump_memory(memory) do
+  def dump(memory) do
     Enum.map_join(memory.map, ",", fn {_key, value} -> value end)
   end
 
