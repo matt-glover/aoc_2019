@@ -24,37 +24,10 @@ defmodule Intcode.Memory do
     %{memory | map: updated}
   end
 
-  def read_instruction(memory, address) do
-    op_code = Intcode.Memory.read_memory(memory, address)
-    param_count = Intcode.Instruction.params_for_code(op_code)
-
-    build_instruction(memory, address, op_code, param_count)
-  end
-
   @doc """
   Dump out the underlying memory data in the supported source code import format
   """
   def dump(memory) do
     Enum.map_join(memory.map, ",", fn {_key, value} -> value end)
-  end
-
-  defp build_instruction(_memory, _address, op_code, 0) do
-    Intcode.Instruction.new(op_code)
-  end
-
-  defp build_instruction(memory, address, op_code, param_count) do
-    parameters =
-      Enum.map(1..param_count, fn offset ->
-        case offset do
-          ^param_count ->
-            Intcode.Memory.read_memory(memory, address + offset)
-
-          _ ->
-            param_address = Intcode.Memory.read_memory(memory, address + offset)
-            Intcode.Memory.read_memory(memory, param_address)
-        end
-      end)
-
-    Intcode.Instruction.new(op_code, List.to_tuple(parameters))
   end
 end

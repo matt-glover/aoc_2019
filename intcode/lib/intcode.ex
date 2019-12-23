@@ -27,7 +27,7 @@ defmodule Intcode do
   def run_program(
         %Intcode.Program{memory: memory, instruction_pointer: pointer} = initialized_program
       ) do
-    instruction = Intcode.Memory.read_instruction(memory, pointer)
+    instruction = Intcode.Parser.parse_instruction(memory, pointer)
 
     case process_instruction(memory, instruction) do
       {:halt, memory} ->

@@ -25,13 +25,6 @@ defmodule Intcode.Instruction do
     %Instruction{op_code: :halt, parameters: {}}
   end
 
-  # TODO: Using this function, .new, Memory.read_instruction is a bit awkward. Consider refactoring.
-  def params_for_code(1), do: 3
-  def params_for_code(2), do: 3
-  def params_for_code(3), do: 1
-  def params_for_code(4), do: 1
-  def params_for_code(99), do: 0
-
   @doc """
   Apply an instruction to memory
   """

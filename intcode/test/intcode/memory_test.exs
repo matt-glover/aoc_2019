@@ -17,17 +17,6 @@ defmodule Intcode.MemoryTest do
     assert(Memory.read_memory(raw_memory, 4) == 99)
   end
 
-  test "read_instruction/2 returns the instruction at a memory location" do
-    memory = Memory.new("1,2,3,4,99")
-
-    assert(
-      %Intcode.Instruction{op_code: :add, parameters: {3, 4, 4}} =
-        Memory.read_instruction(memory, 0)
-    )
-
-    assert(%Intcode.Instruction{op_code: :halt} = Memory.read_instruction(memory, 4))
-  end
-
   test "dump/1 dumps all memory as if it were source code used to initialize memory" do
     memory = %Memory{
       map: %{0 => 1, 1 => 3, 2 => 2, 3 => 1, 4 => 2, 5 => 0, 6 => 95, 7 => 3, 8 => 99}
