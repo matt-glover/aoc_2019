@@ -47,6 +47,7 @@ defmodule Intcode.Instruction do
   def apply_instruction(memory, %Instruction{op_code: :input, parameters: {destination}}) do
     input =
       IO.gets("Input > ")
+      |> String.trim()
       |> String.to_integer()
 
     Intcode.Memory.write_memory(memory, destination, input)

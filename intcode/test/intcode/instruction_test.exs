@@ -29,6 +29,18 @@ defmodule Intcode.InstructionTest do
     assert_received {:block_result, "3,9876,99"}
   end
 
+  test "apply_instruction/2 for :input trims newline from user input" do
+    memory = Intcode.Memory.new("3,1,99")
+    instruction = %Instruction{op_code: :input, parameters: {1}}
+
+    capture_io([input: "9876\n", capture_prompt: false], fn ->
+      updated_memory = Instruction.apply_instruction(memory, instruction)
+      send(self(), {:block_result, Intcode.Memory.dump(updated_memory)})
+    end)
+
+    assert_received {:block_result, "3,9876,99"}
+  end
+
   test "apply_instruction/2 for :output prints out the value" do
     memory = Intcode.Memory.new("4,0,99")
     instruction = %Instruction{op_code: :output, parameters: {4}}
