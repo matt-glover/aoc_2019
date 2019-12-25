@@ -18,7 +18,7 @@ defmodule Intcode do
   Load a program from a raw source code string representation
   """
   def load_program(source_code) do
-    %Intcode.Program{memory: Intcode.Memory.new(source_code)}
+    Intcode.Program.new(source_code)
   end
 
   @doc """
@@ -29,28 +29,21 @@ defmodule Intcode do
       ) do
     instruction = Intcode.Parser.parse_instruction(memory, pointer)
 
-    case process_instruction(memory, instruction) do
-      {:halt, memory} ->
-        memory
+    case process_instruction(initialized_program, instruction) do
+      {:halt, program} ->
+        program
 
-      {:continue, instruction_offset, updated_memory} ->
-        updated_program = %{
-          initialized_program
-          | memory: updated_memory,
-            instruction_pointer: pointer + instruction_offset
-        }
-
+      {:continue, updated_program} ->
         run_program(updated_program)
     end
   end
 
-  defp process_instruction(memory, %Intcode.Instruction{op_code: :halt}) do
-    {:halt, Intcode.Memory.read_memory(memory, 0)}
+  defp process_instruction(program, %Intcode.Instruction{op_code: :halt}) do
+    {:halt, Intcode.Memory.read_memory(program.memory, 0)}
   end
 
-  defp process_instruction(memory, instruction = %Intcode.Instruction{parameters: parameters}) do
-    updated_memory = Intcode.Instruction.apply_instruction(memory, instruction)
-    # + 1 to account for the op_code itself
-    {:continue, tuple_size(parameters) + 1, updated_memory}
+  defp process_instruction(program, instruction = %Intcode.Instruction{}) do
+    updated_program = Intcode.Instruction.apply_instruction(program, instruction)
+    {:continue, updated_program}
   end
 end

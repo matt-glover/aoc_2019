@@ -28,33 +28,40 @@ defmodule Intcode.Instruction do
   @doc """
   Apply an instruction to memory
   """
-  def apply_instruction(memory, %Instruction{
+  def apply_instruction(program, %Instruction{
         op_code: :add,
         parameters: {value_1, value_2, destination}
       }) do
     result = value_1 + value_2
-    Intcode.Memory.write_memory(memory, destination, result)
+    memory = Intcode.Memory.write_memory(program.memory, destination, result)
+    %Intcode.Program{memory: memory, instruction_pointer: program.instruction_pointer + 4}
   end
 
-  def apply_instruction(memory, %Instruction{
+  def apply_instruction(program, %Instruction{
         op_code: :multiply,
         parameters: {value_1, value_2, destination}
       }) do
     result = value_1 * value_2
-    Intcode.Memory.write_memory(memory, destination, result)
+    memory = Intcode.Memory.write_memory(program.memory, destination, result)
+    %Intcode.Program{memory: memory, instruction_pointer: program.instruction_pointer + 4}
   end
 
-  def apply_instruction(memory, %Instruction{op_code: :input, parameters: {destination}}) do
+  def apply_instruction(program, %Instruction{op_code: :input, parameters: {destination}}) do
     input =
       IO.gets("Input > ")
       |> String.trim()
       |> String.to_integer()
 
-    Intcode.Memory.write_memory(memory, destination, input)
+    memory = Intcode.Memory.write_memory(program.memory, destination, input)
+    %Intcode.Program{memory: memory, instruction_pointer: program.instruction_pointer + 2}
   end
 
-  def apply_instruction(memory, %Instruction{op_code: :output, parameters: {value}}) do
+  def apply_instruction(program, %Instruction{op_code: :output, parameters: {value}}) do
     IO.puts("Output: #{value}")
-    memory
+    %{program | instruction_pointer: program.instruction_pointer + 2}
+  end
+
+  def apply_instruction(program, %Instruction{op_code: :halt}) do
+    program
   end
 end
