@@ -18,6 +18,10 @@ defmodule Intcode.ParserTest do
     assert {:multiply, [:position, :position, :position_write]} == Parser.translate_op_code("2")
     assert {:input, [:position_write]} == Parser.translate_op_code("3")
     assert {:output, [:position]} == Parser.translate_op_code("4")
+    assert {:jump_if_true, [:position, :position]} == Parser.translate_op_code("5")
+    assert {:jump_if_false, [:position, :position]} == Parser.translate_op_code("6")
+    assert {:less_than, [:position, :position, :position_write]} == Parser.translate_op_code("7")
+    assert {:equals, [:position, :position, :position_write]} == Parser.translate_op_code("8")
     assert {:halt, []} == Parser.translate_op_code("99")
   end
 

@@ -41,6 +41,10 @@ defmodule Intcode.Parser do
       "02" -> :multiply
       "03" -> :input
       "04" -> :output
+      "05" -> :jump_if_true
+      "06" -> :jump_if_false
+      "07" -> :less_than
+      "08" -> :equals
       "99" -> :halt
     end
   end
@@ -75,6 +79,10 @@ defmodule Intcode.Parser do
       :multiply -> 3
       :input -> 1
       :output -> 1
+      :jump_if_true -> 2
+      :jump_if_false -> 2
+      :less_than -> 3
+      :equals -> 3
       :halt -> 0
     end
   end
@@ -99,6 +107,12 @@ defmodule Intcode.Parser do
         List.replace_at(flags, -1, :position_write)
 
       :input ->
+        List.replace_at(flags, -1, :position_write)
+
+      :less_than ->
+        List.replace_at(flags, -1, :position_write)
+
+      :equals ->
         List.replace_at(flags, -1, :position_write)
 
       _ ->
