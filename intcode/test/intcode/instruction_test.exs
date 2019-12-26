@@ -130,7 +130,7 @@ defmodule Intcode.InstructionTest do
     %Intcode.Program{instruction_pointer: pointer} =
       Instruction.apply_instruction(program, instruction)
 
-    assert(2 == pointer)
+    assert(3 == pointer)
   end
 
   test "apply_instruction/2 for :jump_if_false sets the instruction pointer for a zero parameter" do
@@ -150,7 +150,7 @@ defmodule Intcode.InstructionTest do
     %Intcode.Program{instruction_pointer: pointer} =
       Instruction.apply_instruction(program, instruction)
 
-    assert(2 == pointer)
+    assert(3 == pointer)
   end
 
   test "apply_instruction/2 for :less_than stores 1 if first param is less than second" do

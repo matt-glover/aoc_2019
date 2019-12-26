@@ -82,7 +82,7 @@ defmodule Intcode.Instruction do
         parameters: {compare_input, new_pointer}
       }) do
     if compare_input == 0 do
-      %{program | instruction_pointer: program.instruction_pointer + 2}
+      %{program | instruction_pointer: program.instruction_pointer + 3}
     else
       %{program | instruction_pointer: new_pointer}
     end
@@ -95,7 +95,7 @@ defmodule Intcode.Instruction do
     if compare_input == 0 do
       %{program | instruction_pointer: new_pointer}
     else
-      %{program | instruction_pointer: program.instruction_pointer + 2}
+      %{program | instruction_pointer: program.instruction_pointer + 3}
     end
   end
 
