@@ -1,6 +1,6 @@
-defmodule IntCode do
+defmodule CompTest do
   @moduledoc """
-  Documentation for IntCode.
+  Documentation for CompTest.
   """
 
   @doc """
@@ -8,7 +8,7 @@ defmodule IntCode do
 
   ## Examples
 
-      iex> IntCode.hello()
+      iex> CompTest.hello()
       :world
 
   """

@@ -1,6 +1,6 @@
-defmodule IntCode.CLI do
+defmodule IntCodePoc.CLI do
   @moduledoc """
-  CLI interface to the IntCode computer
+  CLI interface to the IntCodePoc computer
   """
 
   def main([]) do
@@ -28,24 +28,28 @@ defmodule IntCode.CLI do
     file_path = hd(args)
     IO.puts("Starting with #{file_path}")
 
-    result =
+    source_code =
       File.read!(file_path)
       |> String.trim()
-      |> IntCode.Compiler.run_program()
-      |> Enum.join(",")
+
+    result =
+      Intcode.load_program(source_code)
+      |> Intcode.run_program()
 
     IO.puts("Result: #{result}")
   end
 
   defp match_expected?(original_program, input_1, input_2) do
-    program_output =
+    modified_program =
       original_program
       |> String.split(",")
       |> List.replace_at(1, input_1)
       |> List.replace_at(2, input_2)
       |> Enum.join(",")
-      |> IntCode.Compiler.run_program()
-      |> hd()
+
+    program_output =
+      Intcode.load_program(modified_program)
+      |> Intcode.run_program()
 
     program_output == 19_690_720
   end
